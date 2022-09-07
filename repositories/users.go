@@ -2,6 +2,7 @@ package repositories
 
 import (
 	"dumbmerch/models"
+	"time"
 	// Import time here ...
 
 	"gorm.io/gorm"
@@ -10,7 +11,7 @@ import (
 type UserRepository interface {
 	FindUsers() ([]models.User, error)
 	GetUser(ID int) (models.User, error)
-	// Declare CreateUser interface here ...
+	CreateUser(user models.User) (models.User, error)
 }
 
 type repository struct {
@@ -36,3 +37,8 @@ func (r *repository) GetUser(ID int) (models.User, error) {
 }
 
 // Create CreateUser method here ...
+func (r *repository) CreateUser(user models.User) (models.User, error) {
+	err := r.db.Exec("INSERT INTO users(name,email,password,created_at,updated_at) VALUES (?,?,?,?,?)",user.Name, user.Email, user.Password, time.Now(), time.Now()).Error
+
+	return user, err
+}
