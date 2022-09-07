@@ -13,6 +13,7 @@ type UserRepository interface {
 	CreateUser(user models.User) (models.User, error)
 	UpdateUser(user models.User, ID int) (models.User, error)
 	// Declare DeleteUser interface here ...
+	DeleteUser(user models.User, ID int) (models.User, error)
 }
 
 type repository struct {
@@ -50,3 +51,8 @@ func (r *repository) UpdateUser(user models.User, ID int) (models.User, error) {
 }
 
 // Crete DeleteUser method here ...
+func (r *repository) DeleteUser(user models.User,ID int) (models.User, error) {
+	err := r.db.Raw("DELETE FROM users WHERE id=?",ID).Scan(&user).Error
+  
+	return user, err
+  }
