@@ -44,12 +44,16 @@ func (r *repository) CreateUser(user models.User) (models.User, error) {
 
 func (r *repository) UpdateUser(user models.User) (models.User, error) {
 	err := r.db.Save(&user).Error
-
+	
 	return user, err
 }
 
 func (r *repository) DeleteUser(user models.User) (models.User, error) {
 	// Using "Delete" method here ...
+	err := r.db.Delete(&user).Error
+	// if errors.Is(err, gorm.ErrRecordNotFound) {
+	// 	fmt.Println("Data tidak ditemukan")
+	//   }
 
 	return user, err
 }
